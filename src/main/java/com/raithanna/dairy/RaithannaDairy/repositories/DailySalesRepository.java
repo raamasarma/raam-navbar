@@ -11,7 +11,7 @@ import java.util.List;
 public interface DailySalesRepository extends CrudRepository<dailySales, Integer> {
 
 
-    @Query("select * from daily_sales where orderNo=?1")
+    @Query("select * from daily_sales where order_no=?1")
     List<dailySales> findByOrderNo(Integer orderNo);
 
     @Query("select * from daily_sales where id=?1")

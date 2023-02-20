@@ -7,37 +7,56 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>View Order</title>
+    <style>
+.navbar-nav li:hover > ul.dropdown-menu {
+    display: block;
+}
+.dropdown-submenu {
+    position:relative;
+}
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top:-6px;
+}
 
+/* rotate caret on hover */
+.dropdown-menu > li > a:hover:after {
+    text-decoration: underline;
+    transform: rotate(-90deg);
+}
+
+  </style>
     <style type="text/css">
 table { border: 3px solid red }
 table th { border: 2px solid green }
 table td { border: 1px solid blue }
 </style>
-<!--    <script>-->
-<!--    function GetTotal()-->
-<!--    {-->
-<!--    /*Footer Calculation*/-->
+    <!--    <script>-->
+    <!--    function GetTotal()-->
+    <!--    {-->
+    <!--    /*Footer Calculation*/-->
 
-<!--    var sum=0;-->
-<!--    var amts =  document.getElementsByName("amt");-->
+    <!--    var sum=0;-->
+    <!--    var amts =  document.getElementsByName("amt");-->
 
-<!--    for (let index = 0; index < amts.length; index++)-->
-<!--    {-->
-<!--    var amt = amts[index].value;-->
-<!--    sum = +(sum) +  +(amt) ;-->
-<!--    }-->
+    <!--    for (let index = 0; index < amts.length; index++)-->
+    <!--    {-->
+    <!--    var amt = amts[index].value;-->
+    <!--    sum = +(sum) +  +(amt) ;-->
+    <!--    }-->
 
-<!--    document.getElementById("FTotal").value = sum;-->
+    <!--    document.getElementById("FTotal").value = sum;-->
 
-<!--    var netSum =  document.getElementById("FnetAmount").value;-->
-<!--    var net = +(sum) + +(netsum);-->
-<!--    document.getElementById("FnetAmount").value = net;-->
+    <!--    var netSum =  document.getElementById("FnetAmount").value;-->
+    <!--    var net = +(sum) + +(netsum);-->
+    <!--    document.getElementById("FnetAmount").value = net;-->
 
-<!--    }-->
-<!--    </script>-->
+    <!--    }-->
+    <!--    </script>-->
 
 </head>
-<body style="background-image: C:\Users\satya\Downloads\bg.jpeg">
+<body style="background-color: orange;">
 <p style="background-image: url('Downloads/sasha-matic-Y7zkuWl1jDk-unsplash.jpg');">
 <div th:replace="fragments/navbar :: navbar_html"></div>
 <br>
@@ -54,44 +73,16 @@ table td { border: 1px solid blue }
         <div class="col">
             <h3><i>Customer Code:</i> <b><span th:text="${sales.custCode}" id="custCode"></span></b></h3>
         </div>
+        <div class="col">
+            <h3><i>Date:</i> <b><span th:text="${sales.date}" id="date"></span></b></h3>
+        </div>
+
+
 
     </div>
-    <br>
-    <div class="row">
-        <div class="col-6">
-            <label for="product">Product</label>
-            <select id="product" class="form-control" name="product" autocomplete="on">
-                <option th:each="i : ${products}" th:value="${i.PCode}" ><span th:text="${i.PName}"></span> - <span th:text="${i.unitRate}">(Common price)</span></option>
-            </select>
-        </div>
-        <div class="col">
-            <label for="qty">Quantity</label>
-            <input type="number" class="form-control" id="qty" value="1" min="1">
-        </div>
-        <div class="col">
-            <label for="disc">Discount</label>
-            <input type="number" class="form-control" id="disc" value="0" min="0">
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col">
-            <h5>Common price: <span th:text="${commonPrice}" id="commonPrice"></span></h5>
 
-        </div>
-        <div class="col">
-            <h5>Special price: <span th:text="${specialPrice}" id="specialPrice"></span></h5>
 
-        </div>
-        <div class="col">
-            <h5>Amount: <span th:text="${ttlPrice}" id="amt"></span></h5>
-        </div>
-        <div class="col">
-            <h5>Net Amount: <span th:text="${ttlPrice}" id="totalPrice"></span></h5>
-        </div>
-    </div>
-    <br>
-    <button id="addProduct" class="btn btn-primary">Add product</button>
+
 
 </div>
 
@@ -109,7 +100,7 @@ table td { border: 1px solid blue }
             <th scope="col">Amount</th>
             <th scope="col">Net Amount</th>
             <th scope="col" style="display:none;">P_Key</th>
-            <th>Action</th>
+
         </tr>
         </thead>
 
@@ -117,16 +108,19 @@ table td { border: 1px solid blue }
         <tr id="TRow" th:each=" order : ${orders}">
             <td></td>
             <td scope="col"> <span th:text="${order.prodCode}" ></span> </td>
+<!--            <label for="product">Product</label>-->
+<!--            <select id="product" class="form-control" name="product" autocomplete="on">-->
+<!--                <option th:each="i : ${products}" th:value="${i.PCode}" ><span th:text="${i.PName}"></span> - <span th:text="${i.unitRate}">(Common price)</span></option>-->
+<!--            </select>-->
+<!--            <td scope="col"> <input type = "text" class="form-control" id="prodCode" name="prodCode" th:each="i : ${products}" th:value="${i.PCode}" ><span th:text="${i.PName}"></span><span th:text="${i.unitRate}"></span></td>-->
+<!--            <td scope="col"> <option th:each="i : ${products}" th:value="${i.PCode}" ><span th:text="${i.PName}"></span> <span th:text="${i.unitRate}"></span></option>-->
             <td scope="col"> <input type="number" class="form-control" id="qty" name="qty" th:value="${order.quantity}" min="1"/></td>
             <td scope="col"> <span th:text="${order.unitRate}" ></span> </td>
             <td scope="col"> <input type="number" class="form-control" id="disc" name="disc" th:value="${order.disc}" min="0"/> </td>
             <td scope="col"> <span th:text="${order.amount}" id="amount" name="amount"></span> </td>
             <td scope="col"> <span th:text="${order.netAmount}"></span> </td>
             <td scope="col" style ="display:none;"> <span th:text="${order.id}"></span> </td>
-            <td>
-                <a th:href = "@{/orders/{id}(id=${order.id})}"
-                   class = "btn btn-danger">Delete</a>
-            </td>
+
 
         </tr>
         </tbody>
@@ -136,19 +130,19 @@ table td { border: 1px solid blue }
     <br>
     <div class="row">
         <div class="col">
-            <h5><i>Amount:</i> <b><span id="totAmount" name="totAmount"></span></b></h5>
+            <h5><i>Amount:</i> <b><span th:text="${sales.amount}" id="totAmount" name="totAmount"></span></b></h5>
 
         </div>
         <div class="col">
-          <h5><i>Disc:</i> <b><span id="totDiscount" name="totDiscount"></span></b></h5>
-          <!-- <h5><i>Disc:</i> <b><input type="text" class="form-control" id="totDiscount" name="totDiscount" /></b></h5> -->
+            <h5><i>Disc:</i> <b><span th:text="${sales.disc}" id="totDiscount" name="totDiscount"></span></b></h5>
+            <!-- <h5><i>Disc:</i> <b><input type="text" class="form-control" id="totDiscount" name="totDiscount" /></b></h5> -->
         </div>
-<!--        <div class="col">-->
-<!--            <h5><i>Net Amount:</i> <b><span id="totNetAmount" name="totNetAmount"></span></b></h5>-->
+        <!--        <div class="col">-->
+        <!--            <h5><i>Net Amount:</i> <b><span id="totNetAmount" name="totNetAmount"></span></b></h5>-->
 
-<!--        </div>-->
+        <!--        </div>-->
         <div class="col">
-            <h5><i>Net Amount:</i> <b><span id="totNetAmount" name="totNetAmount"></span></b></h5>
+            <h5><i>Net Amount:</i> <b><span th:text="${sales.netAmount}" id="totNetAmount" name="totNetAmount"></span></b></h5>
 
         </div>
 
@@ -236,39 +230,45 @@ addSerialNumber();
 $('#bulkUpdate').click(function() {
 
  var dailySales = [];
-  //var qty, disc;
+  //var prodCode,qty, disc;
+<!--  var prodCode = $("#prodCode").val();-->
   var totAmount = $("#totAmount").text();
-  var totDiscount = $("#totDiscount").val();
-  var totNetAmount = $("#totNetAmount").val();
-  alert(totAmount);
-    alert(totDiscount);
+  var totDisc = $("#totDiscount").text();
+  var totNetAmount =$("#totNetAmount").text();
+var orderNo =$("#orderNo").text();
+//alert(orderNo);
+
+
   $("table tbody tr").each(function(index) {
   var currentRow=$(this).closest("tr");
+<!--  var productCode = parseString(currentRow.find('#prodCode').val());-->
    var quantity = parseFloat(currentRow.find('#qty').val());
       var disc = parseFloat(currentRow.find('#disc').val());
        var amount=currentRow.find("td:eq(5)").text();
          var netAmount=currentRow.find("td:eq(6)").text();
            var id=currentRow.find("td:eq(7)").text();
- //alert(amount);
- // alert(netAmount);
-    //---->Form validation goes here
+
     dailySales.push({
+<!--    productCode : productCode,-->
       quantity: quantity,
       disc: disc,
       amount: amount,
       netAmount: netAmount,
-      id : id,
       totDisc : totDisc,
-<!--      totDiscount : totDiscount,-->
-      totAmount: totAmount,
-      totNetAmount : totNetAmount
+      totNetAmount: totNetAmount,
+      totAmount : totAmount,
+      id :  id,
+      orderNo : orderNo
+
+
+
     });
 
 
   });
-  //alert(dailySales);
+
   var json = JSON.stringify(dailySales);
-  alert(json);
+  //alert(json);
 
   $.ajax({
 url: '/updateOrder',
@@ -278,7 +278,7 @@ url: '/updateOrder',
 success: function(data) {
 
 
-alert("Updated in DB");
+alert("Data Saved Successfully !!!");
 }
 });
 });
@@ -287,7 +287,7 @@ alert("Updated in DB");
 
 <script>
 
-$('table tbody tr').change(function() {
+$('table tbody tr').keyup(function() {
  //var index = this.rowIndex;
  // alert(index);
 

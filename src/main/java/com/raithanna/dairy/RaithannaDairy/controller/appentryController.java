@@ -67,7 +67,7 @@ public class appentryController {
         }
         model.addAttribute("messages",messages);
         session.setAttribute("loggedIn", "yes");
-        return "redirect:/";
+        return "home";
     }
     @RequestMapping("/logout")
     public String logout(HttpSession session, Model model){
@@ -75,7 +75,7 @@ public class appentryController {
         messages.add("Logged out successfully");
         model.addAttribute("messages", messages);
         session.setAttribute("loggedIn", "no");
-        return "home";
+        return "login";
     }
 
 }
